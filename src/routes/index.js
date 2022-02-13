@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import SearchResults from '../views/SearchResult.vue'
 import Detail from '../views/Detail.vue'
 import CustomError from '../views/CustomError.vue'
+import Page from '../views/Page.vue'
 
 const routes = [
     {
@@ -11,12 +12,17 @@ const routes = [
         component: Home
     },
     {
+        path:'/categories/:type',
+        name: 'Page',
+        component: Page
+    },
+    {
         path:'/search/:type?',
         name: 'SearchResults',
         component: SearchResults
     },
     {
-        path:'/details/:id',
+        path:'/details/:type',
         name: 'Detail',
         component: Detail
     },

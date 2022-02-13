@@ -19,7 +19,7 @@
             {{searchData.overview}}
           </p>
           <div class="mt-4">
-            <router-link :to="`/details/${searchData.id}`" type="button" class="btn btn-outline-success btn-sm" aria-current="page">Details</router-link>
+            <router-link :to="getDetailPageUrl(searchData.id)" type="button" class="btn btn-outline-success btn-sm" aria-current="page">Details</router-link>
           </div>
         </div>
       </div>
@@ -39,6 +39,10 @@ export default {
         return `https://www.themoviedb.org/t/p/w300_and_h300_bestv2/${searchData.poster_path}`
       }
       return require("@/assets/images/staticimages/demo.jpg")
+    },
+    getDetailPageUrl(id){
+      let type = this.$route.params.type || 'movie'
+      return `/details/${type}?id=${id}`
     }
   }
 };

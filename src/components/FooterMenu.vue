@@ -1,6 +1,5 @@
 <template> 
-  <hr/>
-  <div class="text-center"><small class="text-muted">&copy; {{copyright}} Adib Hasan</small></div>
+  <div class="text-center pt-3"><small class="text-muted">&copy; {{copyright}} Adib Hasan</small></div>
 </template>
 
 <script>

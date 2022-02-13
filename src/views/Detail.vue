@@ -1,44 +1,68 @@
 <template>
   <section class="details-page-heading">
-     <div class="custom-bg">{{details}}</div>
+    <div class="custom-bg">
+      <div class="row m-0">
+        <div class="col-3 p-0">
+          <img
+          class="img-fluid"
+            :src="getBannerImage(details)"
+            :alt="details.original_title"
+          />
+        </div>
+        <div class="col-8"></div>
+      </div>
+    </div>
   </section>
-  
 </template>
 
 <script>
-import ApiRequestService from '../services/ApiRequestService'
+import ApiRequestService from "../services/ApiRequestService";
 
 export default {
   name: "Detail",
-  data(){
+  data() {
     return {
-      details:[]
-    }
+      details: [],
+    };
+  },
+  methods: {
+    getBannerImage(details) {
+      if (details.poster_path) {
+        return `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${details.poster_path}`;
+      }
+      return require("@/assets/images/staticimages/demo.jpg");
+    },
   },
   created() {
-    
-    ApiRequestService.getMovieDetails(this.$route.params.id)
-         .then( response =>{
-           console.log(response);
-            this.details = response.data
-         })
-         .catch(error => {
-            this.$router.push('/error');
-         })
-  }
+    ApiRequestService.getItemDetails(
+      this.$route.query.id,
+      this.$route.params.type
+    )
+      .then((response) => {
+        console.log(response);
+        this.details = response.data;
+      })
+      .catch((error) => {
+        this.$router.push("/error");
+      });
+  },
 };
 </script>
 
 <style>
 .details-page-heading {
-    border-bottom: 1px solid var(--primaryColor);
-    background-position: right -200px top;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-image: url(https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces//1g0dhYtq4irTY1GPXvft6k4YLjm.jpg);
+  border-bottom: 1px solid var(--primaryColor);
+  background-position: right -200px top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg);
 }
 .details-page-heading div.custom-bg {
-    background-image: linear-gradient(to right, rgba(7, 7, 7, 1) 150px, rgba(7, 7, 7, 0.84) 100%);
-    min-height:calc(5 * var(--min-section-height));
+  background-image: linear-gradient(
+    to right,
+    rgba(7, 7, 7, 1) 150px,
+    rgba(7, 7, 7, 0.84) 100%
+  );
+  min-height: calc(5 * var(--min-section-height));
 }
 </style>

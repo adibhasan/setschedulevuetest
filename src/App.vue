@@ -6,7 +6,7 @@
     <section id="main-content">
       <router-view></router-view>
     </section>
-    <footer>
+    <footer class="border-top">
       <FooterMenu :copyright="copyright" />
     </footer>
   </div>
