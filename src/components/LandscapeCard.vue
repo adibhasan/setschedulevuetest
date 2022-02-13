@@ -1,4 +1,5 @@
 <template>
+  <h1 v-if="searchDetails.length == 0">Data is not available...</h1>
   <div class="card mb-4"  v-for="searchData in searchDetails"
         :key="searchData.id">
     <div class="card-body">
