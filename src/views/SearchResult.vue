@@ -27,10 +27,10 @@
   <section id="search-result-wrapper" class="mt-4">
     <div class="container">
       <div class="row">
-        <div class="col-3">
+        <div class="col-12 col-sm-4 col-md-3">
           <SearchCategory :categories="categories" :query="searchKey" />
         </div>
-        <div class="col-9">
+        <div class="col-12 col-sm-8 col-md-9">
           <LandscapeCard :searchDetails="searchDetails" />
           <Pagination :pagination="paging" />
         </div>

@@ -3,14 +3,14 @@
         :key="searchData.id">
     <div class="card-body">
       <div class="row">
-        <div class="col-3">
+        <div class="col-5 col-sm-4 col-md-3">
           <img
             :src="getImage(searchData)"
             class="card-img-top"
             :alt="searchData.name"
           />
         </div>
-        <div class="col-9">
+        <div class="col-7 col-sm-8 col-md-9">
           <h5 class="card-title">{{searchData.original_title || searchData.name}}</h5>
           <div class="card-text">
             <small class="text-muted s-font-size">{{searchData.release_date}}</small>

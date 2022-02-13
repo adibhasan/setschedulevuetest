@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-3" v-for="popularItem in popularItems" :key="popularItem.id">
+        <div class="col-6 col-sm-6 col-md-3" v-for="popularItem in popularItems" :key="popularItem.id">
           <Card :popularItem="popularItem" />
         </div>
       </div>
