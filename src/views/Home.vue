@@ -32,20 +32,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
+        <div class="col-3" v-for="movy in popularMovies" :key="movy.id">
+          <Card :popularMovy="movy" />
         </div>
       </div>
     </div>
@@ -58,20 +46,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
+        <div class="col-3" v-for="movy in popularMovies" :key="movy.id">
+          <Card :popularMovy="movy" />
         </div>
       </div>
     </div>
@@ -84,20 +60,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
-        </div>
-        <div class="col-3">
-          <Card />
+        <div class="col-3" v-for="movy in popularMovies" :key="movy.id">
+          <Card :popularMovy="movy" />
         </div>
       </div>
     </div>
@@ -107,11 +71,26 @@
 <script>
 
 import Card from '../components/Card.vue'
+import ApiRequestService from '../services/ApiRequestService'
 
 export default {
   name: "Home",
   components: {
     Card
+  },
+  data(){
+    return {
+      popularMovies:[]
+    }
+  },
+  created() {
+    ApiRequestService.getPopularMovies()
+         .then( response =>{
+            this.popularMovies = response.data.results
+         })
+         .catch(error => {
+           console.log('There was an error:' + error.response)
+         })
   },
 };
 </script>
@@ -127,14 +106,5 @@ export default {
   min-height: calc(2 * var(--min-section-height));
   background-color: var(--bg-opacity);
 }
-.popularity-count {
-  width: 100%;
-  background-color: var(--bg-opacity);
-  bottom: 0px;
-  clip-path: circle(56.9% at 48% 95%);
-  position: absolute;
-  font-size: calc(0.8 * var(--font-size));
-  color: white;
-  padding: 120px 30px 15px 15px;
-}
+
 </style>

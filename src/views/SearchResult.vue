@@ -28,110 +28,13 @@
     <div class="container">
       <div class="row">
         <div class="col-3">
-          <div class="card">
-            <div class="card-header">Search Results</div>
-            <div class="card-body">
-              <a
-                href="#"
-                type="button"
-                class="btn btn-sm btn-secondary d-block w-100 mb-1"
-              >
-                Notifications <span class="badge badge-light">4</span>
-              </a>
-              <a
-                href="#"
-                type="button"
-                class="btn btn-sm btn-secondary d-block w-100 mb-1"
-              >
-                Notifications <span class="badge badge-light">4</span>
-              </a>
-              <a
-                href="#"
-                type="button"
-                class="btn btn-sm btn-secondary d-block w-100 mb-1"
-              >
-                Notifications <span class="badge badge-light">4</span>
-              </a>
-              <a
-                href="#"
-                type="button"
-                class="btn btn-sm btn-secondary d-block w-100 mb-1"
-              >
-                Notifications <span class="badge badge-light">4</span>
-              </a>
-            </div>
-          </div>
-          <p class="mt-4 text-muted s-font-size">&#9432;  Tip: You can use the 'y:' filter to narrow your results by year. Example: 'star wars y:1977'.</p>
+          <SearchCategory :categories="categories" :query="searchKey" />
+          <p class="mt-4 text-muted s-font-size">
+            &#9432; Tip: You can use the 'y:' filter to narrow your results by
+            year. Example: 'star wars y:1977'.
+          </p>
         </div>
         <div class="col-9">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-3">
-                  <img
-                    src="https://www.themoviedb.org/t/p/w300_and_h300_bestv2//iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg"
-                    class="card-img-top"
-                    alt="..."
-                  />
-                </div>
-                <div class="col-9">
-                  <h5 class="card-title">Spider-Man: No Way Home</h5>
-                  <div class="card-text">
-                    <small class="text-muted s-font-size"
-                      >September 16, 1977</small
-                    >
-                  </div>
-                  <p class="card-text s-font-size">
-                    Peter Parker is unmasked and no longer able to separate his
-                    normal life from the high-stakes of being a super-hero. When
-                    he asks for help from Doctor Strange the stakes become even
-                    more dangerous, forcing him to discover what it truly means
-                    to be Spider-Man.
-                  </p>
-                  <div class="mt-4">
-                    <a href="#" class="btn btn-outline-success btn-sm"
-                      >Details</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-3">
-                  <img
-                    src="https://www.themoviedb.org/t/p/w300_and_h300_bestv2//iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg"
-                    class="card-img-top"
-                    alt="..."
-                  />
-                </div>
-                <div class="col-9">
-                  <h5 class="card-title">Spider-Man: No Way Home</h5>
-                  <div class="card-text">
-                    <small class="text-muted s-font-size"
-                      >September 16, 1977</small
-                    >
-                  </div>
-                  <p class="card-text s-font-size">
-                    Peter Parker is unmasked and no longer able to separate his
-                    normal life from the high-stakes of being a super-hero. When
-                    he asks for help from Doctor Strange the stakes become even
-                    more dangerous, forcing him to discover what it truly means
-                    to be Spider-Man.
-                  </p>
-                  <div class="mt-4">
-                    <a href="#" class="btn btn-outline-success btn-sm"
-                      >Details</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <nav aria-label="Page navigation example">
             <ul class="pagination">
               <li class="page-item">
@@ -150,12 +53,104 @@
 </template>
 
 <script>
-import Card from "../components/Card.vue";
+import SearchCategory from "@/components/SearchCategory.vue";
+import ApiRequestService from "../services/ApiRequestService";
 
 export default {
   name: "SearchResults",
   components: {
-    Card,
+    SearchCategory,
+  },
+  data() {
+    return {
+      searchKey: "",
+      totalPage: 0,
+      categories: [
+        {
+          id: 1,
+          title: "Movies",
+          total: 0,
+          type: "movie",
+        },
+        {
+          id: 2,
+          title: "TV Shows",
+          total: 0,
+          type: "tv",
+        },
+        {
+          id: 3,
+          title: "People",
+          total: 0,
+          type: "person",
+        },
+        {
+          id: 4,
+          title: "Collections",
+          total: 0,
+          type: "collection",
+        },
+        {
+          id: 5,
+          title: "Keywords",
+          total: 0,
+          type: "keyword",
+        },
+        {
+          id: 6,
+          title: "Companies",
+          total: 0,
+          type: "company",
+        },
+        {
+          id: 7,
+          title: "Collection",
+          total: 0,
+          type: "collection",
+        },
+      ],
+      searchDetails: [],
+    };
+  },
+  methods: {
+    getAllDataNumber() {
+      let type = this.$route.params.type
+      let query = this.$route.query.query
+      let page = this.$route.query.page
+      if (query === "") {
+        this.$router.push("/error");
+      }
+      if (type === "") {
+        type = "movie"
+      }
+      if (page === "") {
+        page = 1
+      }
+      this.searchKey = query
+      ApiRequestService.searchByType(this.searchKey,page,type)
+         .then( response =>{
+            this.searchDetails = response.data.result
+            this.totalPage = response.data.total_pages
+         })
+         .catch(error => {
+            
+         })
+    },
+  },
+  created() {
+    this.getAllDataNumber()
+    for (let category of this.categories) {
+        ApiRequestService.searchByType(this.searchKey,1,category.type)
+         .then( response =>{
+            this.categories[category.id-1].total = response.data.total_results
+         })
+         .catch(error => {
+            
+         })
+    }
+  },
+  updated() {
+    console.log(11);
   },
 };
 </script>

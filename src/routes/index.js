@@ -2,6 +2,7 @@ import { createRouter,createWebHistory } from "vue-router"
 import Home from '../views/Home.vue'
 import SearchResults from '../views/SearchResult.vue'
 import Detail from '../views/Detail.vue'
+import CustomError from '../views/CustomError.vue'
 
 const routes = [
     {
@@ -10,14 +11,19 @@ const routes = [
         component: Home
     },
     {
-        path:'/search',
+        path:'/search/:type?',
         name: 'SearchResults',
         component: SearchResults
     },
     {
-        path:'/details',
+        path:'/details/:id',
         name: 'Detail',
         component: Detail
+    },
+    {
+        path:'/:pathMatch(.*)',
+        name: 'CustomError',
+        component: CustomError
     }
 ]
 

@@ -1,14 +1,31 @@
 <template>
   <section class="details-page-heading">
-     <div class="custom-bg"></div>
+     <div class="custom-bg">{{details}}</div>
   </section>
   
 </template>
 
 <script>
+import ApiRequestService from '../services/ApiRequestService'
 
 export default {
-  name: "Detail"
+  name: "Detail",
+  data(){
+    return {
+      details:[]
+    }
+  },
+  created() {
+    
+    ApiRequestService.getMovieDetails(this.$route.params.id)
+         .then( response =>{
+           console.log(response);
+            this.details = response.data
+         })
+         .catch(error => {
+            this.$router.push('/error');
+         })
+  }
 };
 </script>
 

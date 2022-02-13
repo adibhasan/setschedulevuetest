@@ -7,7 +7,7 @@
 export default {
   name: "FooterMenu",
   props: {
-    copyright: String
+    copyright: Number
   }
 };
 </script>
