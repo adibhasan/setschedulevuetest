@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
          <img class="wd-150" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" />
       </a>
       <button
@@ -18,27 +18,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item" v-for="(menu, index) in topMenus">
-            <router-link :to="menu.url" class="nav-link active" aria-current="page">{{menu.title}}</router-link>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Dropdown
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </li>
-            </ul>
+            <router-link :to="`/categories/${menu.type}`" class="nav-link active" aria-current="page">{{menu.title}}</router-link>
           </li>
         </ul>
         <form class="d-flex">
@@ -54,26 +34,16 @@
     </div>
   </nav>
 </template>
-
+ 
 <script>
+
+import { CATEGORY } from "@/utils/Constant";
+
 export default {
   name: "TopMenu",
   data() {
     return {
-      topMenus: [
-        {
-          title: 'Movies',
-          url: '/movies'
-        },
-        {
-          title: 'TV Shows',
-          url: '/tv-shows'
-        },
-        {
-          title: 'People',
-          url: '/people'
-        }
-      ]
+      topMenus: CATEGORY
     };
   },
 };

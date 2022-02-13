@@ -11,10 +11,8 @@
         aria-current="page"
       >
         {{ category.title }}
-        <span class="badge badge-light"
-          >({{ category.total }})</span
-        ></router-link
-      >
+        <span class="badge badge-light">({{ category.total }})</span>
+      </router-link>
     </div>
   </div>
 </template>
@@ -24,8 +22,7 @@ export default {
   name: "SearchCategory",
   props: {
     categories: Array,
-    query: String
+    query: String,
   },
 };
 </script>
-

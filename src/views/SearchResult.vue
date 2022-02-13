@@ -29,23 +29,10 @@
       <div class="row">
         <div class="col-3">
           <SearchCategory :categories="categories" :query="searchKey" />
-          <p class="mt-4 text-muted s-font-size">
-            &#9432; Tip: You can use the 'y:' filter to narrow your results by
-            year. Example: 'star wars y:1977'.
-          </p>
         </div>
         <div class="col-9">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#">Previous</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-          </nav>
+          <LandscapeCard :searchDetails="searchDetails" />
+          <Pagination :pagination="paging" />
         </div>
       </div>
     </div>
@@ -54,104 +41,84 @@
 
 <script>
 import SearchCategory from "@/components/SearchCategory.vue";
-import ApiRequestService from "../services/ApiRequestService";
+import LandscapeCard from "@/components/LandscapeCard.vue";
+import Pagination from "@/components/Pagination.vue";
+import ApiRequestService from "@/services/ApiRequestService";
+import { CATEGORY } from "@/utils/Constant";
+
 
 export default {
   name: "SearchResults",
   components: {
     SearchCategory,
+    LandscapeCard,
+    Pagination,
   },
   data() {
     return {
       searchKey: "",
-      totalPage: 0,
-      categories: [
-        {
-          id: 1,
-          title: "Movies",
-          total: 0,
-          type: "movie",
-        },
-        {
-          id: 2,
-          title: "TV Shows",
-          total: 0,
-          type: "tv",
-        },
-        {
-          id: 3,
-          title: "People",
-          total: 0,
-          type: "person",
-        },
-        {
-          id: 4,
-          title: "Collections",
-          total: 0,
-          type: "collection",
-        },
-        {
-          id: 5,
-          title: "Keywords",
-          total: 0,
-          type: "keyword",
-        },
-        {
-          id: 6,
-          title: "Companies",
-          total: 0,
-          type: "company",
-        },
-        {
-          id: 7,
-          title: "Collection",
-          total: 0,
-          type: "collection",
-        },
-      ],
+      page: 1,
+      type: "multi",
+      paging: {
+        currentpage: 0,
+        totalPage: 0,
+      },
+      categories: CATEGORY,
       searchDetails: [],
     };
   },
   methods: {
     getAllDataNumber() {
-      let type = this.$route.params.type
-      let query = this.$route.query.query
-      let page = this.$route.query.page
+      let type = this.$route.params.type;
+      let query = this.$route.query.query;
+      let page = this.$route.query.page || 1;
       if (query === "") {
         this.$router.push("/error");
       }
       if (type === "") {
-        type = "movie"
+        type = "movie";
       }
       if (page === "") {
-        page = 1
+        page = 1;
       }
-      this.searchKey = query
-      ApiRequestService.searchByType(this.searchKey,page,type)
-         .then( response =>{
-            this.searchDetails = response.data.result
-            this.totalPage = response.data.total_pages
-         })
-         .catch(error => {
-            
-         })
+      this.searchKey = query;
+      this.page = page;
+      this.type = type;
+    },
+    setData(response) {
+      this.searchDetails = response.data.results;
+      this.totalPage = response.data.total_pages;
+      this.paging.currentpage = response.data.page;
+      this.paging.totalPage = response.data.total_pages;
+    },
+    getData() {
+      ApiRequestService.searchByType(this.searchKey, this.page, this.type)
+        .then((response) => {
+          this.setData(response);
+        })
+        .catch((error) => {});
     },
   },
   created() {
-    this.getAllDataNumber()
+    this.getAllDataNumber();
     for (let category of this.categories) {
-        ApiRequestService.searchByType(this.searchKey,1,category.type)
-         .then( response =>{
-            this.categories[category.id-1].total = response.data.total_results
-         })
-         .catch(error => {
-            
-         })
+      ApiRequestService.searchByType(this.searchKey, 1, category.type)
+        .then((response) => {
+          this.categories[category.id - 1].total = response.data.total_results;
+        })
+        .catch((error) => {});
     }
+    this.getData();
   },
   updated() {
-    console.log(11);
+    this.getAllDataNumber();
   },
+  watch: {
+    $route(to, from) {
+      this.getAllDataNumber();
+      this.getData();
+    },
+  }
 };
 </script>
 

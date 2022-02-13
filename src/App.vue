@@ -32,6 +32,7 @@ export default {
   :root {
     --blue: #1e90ff;
     --white: #ffffff;
+    --gray: #383a3e;
     --minheight: 100vh;
     --min-section-height: 100px;
     --bg-opacity: rgba(7, 7, 7, 0.8);

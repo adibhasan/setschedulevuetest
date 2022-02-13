@@ -6,14 +6,14 @@ const apiRequest = axios.create({
     baseURL: 'https://api.themoviedb.org'
 })
 
-export default{
-    getPopularMovies(){
+export default {
+    getPopularMovies() {
         return apiRequest.get(`/${API_VERSION}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`)
     },
-    getMovieDetails(movieId){
+    getMovieDetails(movieId) {
         return apiRequest.get(`/${API_VERSION}/movie/${movieId}?api_key=${API_KEY}&language=en-US&page=1`)
     },
-    searchByType(search,page,type='multi'){
+    searchByType(search, page, type = 'multi') {
         return apiRequest.get(`/${API_VERSION}/search/${type}?api_key=${API_KEY}&language=en-US&query=${search}&page=${page}&include_adult=false`)
     }
 }
